@@ -5,6 +5,7 @@ import { Navigation } from "./components/navigation";
 import { RegardsSection } from "./components/regards-section";
 import { FilmsSection } from "./components/films-section";
 import { AboutSection } from "./components/about-section";
+import { SeoHead } from "./components/seo-head";
 
 type SectionType = "home" | "regards" | "films" | "about";
 
@@ -82,6 +83,7 @@ export default function App() {
 
   return (
     <div className="fixed inset-0 overflow-hidden bg-[#f5f5f5]">
+      <SeoHead />
       {/* Fixed Navigation - Hidden on Home */}
       {currentSection !== "home" && (
         <Navigation
