@@ -1,0 +1,43 @@
+name: Build & deploy to OVH
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # Neutralise les incompatibilités du package.json généré par Figma Make
+      - name: Corriger package.json
+        run: node scripts/fix-package.mjs
+
+      # Retire le noindex ajouté par Figma Make (à supprimer si le site
+      # doit rester invisible des moteurs de recherche)
+      - name: Autoriser l'indexation
+        run: sed -i '/name="robots"/d' index.html
+
+      - name: Installer les dépendances
+        run: npm install --no-audit --no-fund
+
+      - name: Compiler le site
+        run: npm run build
+
+      - name: Envoyer sur le FTP OVH
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: ./dist/
+          server-dir: ./www/
+          exclude: |
+            **/SRCs/**
