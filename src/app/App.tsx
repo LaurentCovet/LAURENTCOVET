@@ -5,7 +5,6 @@ import { Navigation } from "./components/navigation";
 import { RegardsSection } from "./components/regards-section";
 import { FilmsSection } from "./components/films-section";
 import { AboutSection } from "./components/about-section";
-import { SeoHead } from "./components/seo-head";
 
 type SectionType = "home" | "regards" | "films" | "about";
 
@@ -15,6 +14,69 @@ export default function App() {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [homeKey, setHomeKey] = useState(0);
+
+  useEffect(() => {
+    const TITLE = "Laurent Covet | Director & Creative Technology Supervisor";
+    const DESC =
+      "Crafting visual narratives for the luxury sector. A multidisciplinary visual craftsman merging aesthetic emotion with technological innovation.";
+    const URL = "https://www.laurentcovet.com/";
+    const IMAGE = "https://www.laurentcovet.com/og-image.jpg";
+
+    document.title = TITLE;
+
+    const meta = (
+      attrs: Record<string, string>,
+      content: string
+    ) => {
+      const sel = Object.entries(attrs)
+        .map(([k, v]) => `[${k}="${v}"]`)
+        .join("");
+      let el = document.querySelector<HTMLMetaElement>(`meta${sel}`);
+      if (!el) {
+        el = document.createElement("meta");
+        Object.entries(attrs).forEach(([k, v]) => el!.setAttribute(k, v));
+        document.head.appendChild(el);
+      }
+      el.setAttribute("content", content);
+    };
+
+    const link = (attrs: Record<string, string>) => {
+      const nonHref = Object.entries(attrs).filter(([k]) => k !== "href");
+      const sel = nonHref.map(([k, v]) => `[${k}="${v}"]`).join("");
+      let el = document.querySelector<HTMLLinkElement>(`link${sel}`);
+      if (!el) {
+        el = document.createElement("link");
+        document.head.appendChild(el);
+      }
+      Object.entries(attrs).forEach(([k, v]) => el!.setAttribute(k, v));
+    };
+
+    // Standard
+    meta({ name: "description" }, DESC);
+    meta({ "http-equiv": "content-language" }, "en-US");
+
+    // Open Graph
+    meta({ property: "og:title" }, TITLE);
+    meta({ property: "og:description" }, DESC);
+    meta({ property: "og:url" }, URL);
+    meta({ property: "og:site_name" }, "Laurent Covet");
+    meta({ property: "og:type" }, "website");
+    meta({ property: "og:locale" }, "en_US");
+    meta({ property: "og:image" }, IMAGE);
+    meta({ property: "og:image:width" }, "1200");
+    meta({ property: "og:image:height" }, "1200");
+    meta({ property: "og:image:alt" }, TITLE);
+
+    // Twitter / X Card
+    meta({ name: "twitter:card" }, "summary_large_image");
+    meta({ name: "twitter:title" }, TITLE);
+    meta({ name: "twitter:description" }, DESC);
+    meta({ name: "twitter:image" }, IMAGE);
+    meta({ name: "twitter:image:alt" }, TITLE);
+
+    // Canonical
+    link({ rel: "canonical", href: URL });
+  }, []);
 
   const handleNavigate = (section: string) => {
     if (isTransitioning) return;
@@ -83,7 +145,6 @@ export default function App() {
 
   return (
     <div className="fixed inset-0 overflow-hidden bg-[#f5f5f5]">
-      <SeoHead />
       {/* Fixed Navigation - Hidden on Home */}
       {currentSection !== "home" && (
         <Navigation
