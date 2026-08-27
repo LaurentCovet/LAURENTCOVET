@@ -362,7 +362,7 @@ export function RegardsSection({ onNavigate }: { onNavigate: (section: string) =
     Promise.all(FEED_URLS.map((url) => fetch(url).then((r) => r.json()).catch(() => ({ posts: [] }))))
       .then((results) => {
         const all = results.flatMap((data) => data.posts ?? []);
-        setPosts(all);
+        setPosts([...all].sort(() => Math.random() - 0.5));
       })
       .finally(() => setLoading(false));
   }, []);

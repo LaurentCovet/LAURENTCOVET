@@ -1,0 +1,4 @@
+Place your og-image.jpg file here (1200 × 1200 px).
+It will be served at https://www.laurentcovet.com/og-image.jpg
+and used for Open Graph / social sharing previews on WhatsApp,
+LinkedIn, Facebook, and iMessage.

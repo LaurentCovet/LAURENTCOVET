@@ -900,7 +900,7 @@ export function FilmsSection({ onNavigate }: { onNavigate: (section: string) => 
                     className="mb-10"
                   >
                     <h3 className="mb-4 text-sm uppercase tracking-[0.2em] text-[#6a6a6a]">
-                      Making Of
+                      Stills
                     </h3>
                     <div className="space-y-4">
                       {selectedFilm.makingOfImages.filter(img => img !== "").map((image, index) => (
@@ -914,7 +914,7 @@ export function FilmsSection({ onNavigate }: { onNavigate: (section: string) => 
                         >
                           <img
                             src={image}
-                            alt={`Making of ${index + 1}`}
+                            alt={`Stills ${index + 1}`}
                             loading="lazy"
                             decoding="async"
                             className="h-full w-full object-cover"
